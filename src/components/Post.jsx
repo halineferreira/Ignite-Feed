@@ -1,8 +1,17 @@
+import { format, formatDistanceToNow } from "date-fns";
+
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export function Post({ author }) {
+export function Post({ author, publishedAt, content }) {
+  const publishedDateFormatted = format(
+    publishedAt,
+    "MMMM, Lo 'at' hh:mmaaaaa'm'"
+  );
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    addSuffix: true,
+  });
   return (
     <article className={styles.post}>
       <header>
@@ -13,20 +22,25 @@ export function Post({ author }) {
             <span>{author.role}</span>
           </div>
         </div>
-        <time title="August, 1st at 09:01am" dateTime="2022-08-01 09:01:23">
-          Published 1 hour ago
+        <time
+          title={publishedDateFormatted}
+          dateTime={publishedAt.toISOString()}
+        >
+          {publishedDateRelativeToNow}
         </time>
       </header>
       <div className={styles.content}>
-        <p>Hi there 👋</p>
-        <p>I'm studying ReactJS to improve my skills 🚀</p>
-        <p>
-          <a href="https://github.com/halineferreira">My Github</a>
-        </p>
-        <p>
-          <a href="">#newProject</a> <a href="">#nlw</a>{" "}
-          <a href="">#rocketseat</a>
-        </p>
+        {content.map((item) => {
+          if (item.type === "paragraph") {
+            return <p>{item.content}</p>;
+          } else if (item.type === "link") {
+            return (
+              <p>
+                <a href="">{item.content}</a>
+              </p>
+            );
+          }
+        })}
       </div>
       <form className={styles.commentForm}>
         <strong>Give your feedback</strong>
