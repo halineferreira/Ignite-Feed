@@ -29,6 +29,10 @@ export function Post({ author, publishedAt, content }) {
     setNewCommentText(event.target.value);
   }
 
+  function handleNewCommentInvalid() {
+    console.log(event);
+  }
+
   function deleteComment(commentToDelete) {
     const commmentsWithoutDeletedOne = comments.filter((comment) => {
       return comment !== commentToDelete;
@@ -75,6 +79,8 @@ export function Post({ author, publishedAt, content }) {
           placeholder="Leave a comment"
           value={newCommentText}
           onChange={handleNewCommentChange}
+          onInvalid={handleNewCommentInvalid}
+          required
         />
         <footer>
           <button type="submit">Publish</button>
