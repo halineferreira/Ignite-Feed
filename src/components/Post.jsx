@@ -26,11 +26,12 @@ export function Post({ author, publishedAt, content }) {
   }
 
   function handleNewCommentChange() {
+    event.target.setCustomValidity("");
     setNewCommentText(event.target.value);
   }
 
   function handleNewCommentInvalid() {
-    console.log(event);
+    event.target.setCustomValidity("This is a mandatory field!!!");
   }
 
   function deleteComment(commentToDelete) {
@@ -39,6 +40,8 @@ export function Post({ author, publishedAt, content }) {
     });
     setComments(commmentsWithoutDeletedOne);
   }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -83,7 +86,9 @@ export function Post({ author, publishedAt, content }) {
           required
         />
         <footer>
-          <button type="submit">Publish</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publish
+          </button>
         </footer>
       </form>
 
